@@ -55,3 +55,13 @@ module "vpc" {
   all_cidr         = "0.0.0.0/0"
   egress           = 0
 }
+module "jenkins" {
+  source        = "./module/jenkins"
+  instance_type_t2 = "t2.medium"
+  keypair_name  = module.vpc.keypair
+  prt_sn1       = module.vpc.prtsub1_id
+  jenkins_name  = "${local.project-name}-jenkins"
+  jenkins_sg    = module.vpc.jenkins_sg_id
+  elb_name      = "${local.project-name}-elb"
+  subnet_id2    = [module.vpc.pubsub1_id, module.vpc.pubsub2_id, module.vpc.pubsub3_id]
+}
