@@ -75,3 +75,21 @@ module "bastions_host" {
   keypair_name        = module.vpc.keypair
   private_key         = module.vpc.private-key
 }
+#create haproxy module 
+module "haproxy-servers" {
+  source        = "./module/haproxy"
+  keypair       = module.vpc.keypair
+  ami           = "ami-0ecc74eca1d66d8a6"
+  instance_type = "t2.medium"
+  prtsub1_id    = module.vpc.prtsub1_id
+  prtsub2_id    = module.vpc.prtsub3_id
+  HAproxy_sg    = module.vpc.master_sg_id
+  master1       = module.master_node.master_ip[0]
+  master2       = module.master_node.master_ip[1]
+  master3       = module.master_node.master_ip[2]
+  master4       = module.master_node.master_ip[0]
+  master5       = module.master_node.master_ip[1]
+  master6       = module.master_node.master_ip[2]
+  name-tags     = "${local.project-name}-haproxy1"
+  name-tags2    = "${local.project-name}-haproxy-backup"
+}
