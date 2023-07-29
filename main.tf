@@ -56,12 +56,22 @@ module "vpc" {
   egress           = 0
 }
 module "jenkins" {
-  source        = "./module/jenkins"
+  source           = "./module/jenkins"
   instance_type_t2 = "t2.medium"
-  keypair_name  = module.vpc.keypair
-  prt_sn1       = module.vpc.prtsub1_id
-  jenkins_name  = "${local.project-name}-jenkins"
-  jenkins_sg    = module.vpc.jenkins_sg_id
-  elb_name      = "${local.project-name}-elb"
-  subnet_id2    = [module.vpc.pubsub1_id, module.vpc.pubsub2_id, module.vpc.pubsub3_id]
+  keypair_name     = module.vpc.keypair
+  prt_sn1          = module.vpc.prtsub1_id
+  jenkins_name     = "${local.project-name}-jenkins"
+  jenkins_sg       = module.vpc.jenkins_sg_id
+  elb_name         = "${local.project-name}-elb"
+  subnet_id2       = [module.vpc.pubsub1_id, module.vpc.pubsub2_id, module.vpc.pubsub3_id]
+}
+module "bastions_host" {
+  source              = "./module/bastion-host"
+  bastion-name        = "${local.project-name}-bastion-host"
+  ubuntu_ami          = "ami-03f65b8614a860c29"
+  instance_type_micro = "t2.micro"
+  subnet_id           = module.vpc.pubsub1_id
+  security_group      = module.vpc.ansible_sg_id
+  keypair_name        = module.vpc.keypair
+  private_key         = module.vpc.private-key
 }
