@@ -7,6 +7,6 @@ resource "aws_instance" "worker_node" {
   key_name                    = var.keypair_name
   count                       = var.instance_count
   tags = {
-    Name = "${var.instance_name}${count.index}"
+    Name = "${var.instance_name}-${count.index}"
   }
 }
