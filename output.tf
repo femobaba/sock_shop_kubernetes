@@ -5,5 +5,5 @@ output "haproxy2" {
   value = module.haproxy-servers.prod_HAProxy-backup_IP
 }
 output "worker_node" {
-  value = module.worker_node.worker_ip
+  value = module.worker_node.*.worker_ip
 }
