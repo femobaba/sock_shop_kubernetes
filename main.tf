@@ -65,8 +65,8 @@ module "jenkins" {
   elb_name         = "${local.project-name}-elb"
   subnet_id2       = [module.vpc.pubsub1_id, module.vpc.pubsub2_id, module.vpc.pubsub3_id]
 }
-module "bastions_host" {
-  source              = "./module/bastion-host"
+module "bastions-host" {
+  source              = "./module/bastion"
   bastion-name        = "${local.project-name}-bastion-host"
   ubuntu_ami          = "ami-03f65b8614a860c29"
   instance_type_micro = "t2.micro"
@@ -79,7 +79,7 @@ module "bastions_host" {
 module "haproxy-servers" {
   source        = "./module/haproxy"
   keypair       = module.vpc.keypair
-  ami           = "ami-0ecc74eca1d66d8a6"
+  ami           = "ami-03f65b8614a860c29"
   instance_type = "t2.medium"
   prtsub1_id    = module.vpc.prtsub1_id
   prtsub2_id    = module.vpc.prtsub3_id
