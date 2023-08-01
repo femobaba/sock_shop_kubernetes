@@ -65,9 +65,9 @@ module "jenkins" {
   elb_name         = "${local.project-name}-elb"
   subnet_id2       = [module.vpc.pubsub1_id, module.vpc.pubsub2_id, module.vpc.pubsub3_id]
 }
-module "bastions-host" {
+module "bastions_host" {
   source              = "./module/bastion"
-  bastion-name        = "${local.project-name}-bastion-host"
+  bastion-name        = "${local.project-name}-bastion"
   ubuntu_ami          = "ami-03f65b8614a860c29"
   instance_type_micro = "t2.micro"
   subnet_id           = module.vpc.pubsub1_id
@@ -92,4 +92,15 @@ module "haproxy-servers" {
   master6       = module.master_node.master_ip[2]
   name-tags     = "${local.project-name}-haproxy1"
   name-tags2    = "${local.project-name}-haproxy-backup"
+}
+#create worker_node
+module "worker_node" {
+  source         = "./module/worker_node"
+  ubuntu_ami     = "ami-03f65b8614a860c29"
+  instance_type  = "t2.medium"
+  worker-node-sg = module.vpc.master_sg_id
+  subnet_id      = [module.vpc.prtsub1_id, module.vpc.prtsub2_id, module.vpc.prtsub3_id]
+  keypair_name   = module.vpc.keypair
+  instance_count = 3
+  instance_name  = "${local.project-name}-worker_node"
 }
