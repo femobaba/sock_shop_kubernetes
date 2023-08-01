@@ -104,3 +104,15 @@ module "worker_node" {
   instance_count = 3
   instance_name  = "${local.project-name}-worker_node"
 }
+
+#master_node module
+module "master_node" {
+  source         = "./module/master_node"
+  ubuntu_ami     = "ami-03f65b8614a860c29"
+  instance_type  = "t2.medium"
+  master-node-sg = module.vpc.master_sg_id
+  subnet_id      = [module.vpc.prtsub1_id, module.vpc.prtsub2_id, module.vpc.prtsub3_id]
+  keypair_name   = module.vpc.keypair
+  instance_count = 3
+  instance_name  = "${local.project-name}-master_node"
+}
