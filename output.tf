@@ -7,3 +7,7 @@ output "haproxy2" {
 output "worker_node" {
   value = module.worker_node.*.worker_ip
 }
+
+output "master_node" {
+  value = module.master_node.master_ip  
+}

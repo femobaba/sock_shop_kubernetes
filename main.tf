@@ -79,7 +79,7 @@ module "bastions_host" {
 module "haproxy-servers" {
   source        = "./module/haproxy"
   keypair       = module.vpc.keypair
-  ami           = "ami-0ecc74eca1d66d8a6"
+  ami           = "ami-03f65b8614a860c29"
   instance_type = "t2.medium"
   prtsub1_id    = module.vpc.prtsub1_id
   prtsub2_id    = module.vpc.prtsub3_id
@@ -103,4 +103,16 @@ module "worker_node" {
   keypair_name   = module.vpc.keypair
   instance_count = 3
   instance_name  = "${local.project-name}-worker_node"
+}
+
+#master_node module
+module "master_node" {
+  source         = "./module/master_node"
+  ubuntu_ami     = "ami-03f65b8614a860c29"
+  instance_type  = "t2.medium"
+  master-node-sg = module.vpc.master_sg_id
+  subnet_id      = [module.vpc.prtsub1_id, module.vpc.prtsub2_id, module.vpc.prtsub3_id]
+  keypair_name   = module.vpc.keypair
+  instance_count = 3
+  instance_name  = "${local.project-name}-master_node"
 }
