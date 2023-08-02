@@ -9,5 +9,8 @@ output "worker_node" {
 }
 
 output "master_node" {
-  value = module.master_node.master_ip  
+  value = module.master_node.master_ip
+}
+output "ansible_server" {
+  value = module.ansible.ansible-ip
 }
