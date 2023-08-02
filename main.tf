@@ -116,3 +116,23 @@ module "master_node" {
   instance_count = 3
   instance_name  = "${local.project-name}-master_node"
 }
+#creating ansible server
+module "ansible" {
+  source         = "./module/ansible"
+  ami            = "ami-03f65b8614a860c29"
+  instance_type  = "t2.micro"
+  subnet_id      = module.vpc.prtsub1_id
+  ansible-sg-id  = module.vpc.ansible_sg_id
+  keys           = module.vpc.keypair
+  prv_key        = module.vpc.private-key
+  HAproxy1_IP    = module.haproxy-servers.prod_HAProxy_IP
+  HAproxy2_IP    = module.haproxy-servers.prod_HAProxy-backup_IP
+  master1_IP     = module.master_node.master_ip[0]
+  master2_IP     = module.master_node.master_ip[1]
+  master3_IP     = module.master_node.master_ip[2]
+  worker1_IP     = module.worker_node.worker_ip[0]
+  worker2_IP     = module.worker_node.worker_ip[1]
+  worker3_IP     = module.worker_node.worker_ip[2]
+  bastion-host   = module.bastions_host.bastion-ip
+  ansible_server = "${local.project-name}-ansible-server"
+}

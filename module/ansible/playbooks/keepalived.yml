@@ -1,0 +1,70 @@
+---
+ - hosts: MastKeepalived
+   become: yes 
+   vars_files: 
+    - /home/ubuntu/ha-ip.yml
+   
+   tasks: 
+    - name: Installation of keepalived
+      shell: sudo apt install keepalived -y
+     
+    - name: Configure keepalived
+      shell: |
+        sudo bash -c 'echo "
+        vrrp_instance haproxy-vip1 {
+          state MASTER
+          priority 100
+          interface ens5
+          virtual_router_id 60
+          advert_int 1
+          authentication {
+            auth_type PASS
+            auth_pass 1234
+          }
+          unicast_src_ip "{{ha_prv_ip}}"
+          unicast_peer {
+            "{{prod_Bckup_haIP}}"
+          }
+          virtual_ipaddress {
+            10.0.1.19/24
+          }
+        } " > /etc/keepalived/keepalived.conf'
+    - name: Restart keepalived
+      shell: |
+        sudo systemctl restart keepalived
+        sudo systemctl enable keepalived
+
+ - hosts: Prod_BackupKeepalived
+   become: yes 
+   vars_files: 
+    - /home/ubuntu/ha-ip.yml
+   
+   tasks: 
+    - name: Installation of keepalived
+      shell: sudo apt install keepalived -y
+     
+    - name: Configure keepalived
+      shell: |
+        sudo bash -c 'echo "
+        vrrp_instance haproxy-vip2 {
+          state BACKUP
+          priority 99
+          interface ens5
+          virtual_router_id 60
+          advert_int 1
+          authentication {
+            auth_type PASS
+            auth_pass 1234
+          }
+          unicast_src_ip "{{prod_Bckup_haIP}}"
+          unicast_peer {
+            "{{ha_prv_ip}}"
+          }
+          virtual_ipaddress {
+            10.0.1.19/24
+          }
+        } " > /etc/keepalived/keepalived.conf'
+    - name: Restart keepalived
+      shell: |
+        sudo systemctl restart keepalived
+        sudo systemctl enable keepalived
