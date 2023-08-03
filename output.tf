@@ -14,3 +14,7 @@ output "master_node" {
 output "ansible_server" {
   value = module.ansible.ansible-ip
 }
+
+output "bastions_host" {
+  value = module.bastions_host.bastion-ip
+}
