@@ -18,3 +18,11 @@ output "ansible_server" {
 output "bastions_host" {
   value = module.bastions_host.bastion-ip
 }
+
+output "prometheus-lb" {
+  value = module.prometheus_lb.prometheus-lb
+}
+
+output "grafana-lb" {
+  value = module.grafana_lb.grafana-lb
+}
