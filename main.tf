@@ -182,3 +182,22 @@ module "grafana_lb" {
   vpc_id          = module.vpc.vpc_id
   acm_certificate = module.route53.k8s-cert
 }
+
+# creating route53
+module "route53" {
+  source                        = "./module/route-53"
+  domain_name                   = "praisepeace.link"
+  domain_name2                  = "*.praisepeace.link"
+  grafana_domain_hosted_zone    = "grafana.praisepeace.link"
+  prometheus_domain_hosted_zone = "prometheus.praisepeace.link"
+  stage_domain_hosted_zone      = "stage.praisepeace.link"
+  prod_domain_name              = "prod.praisepeace.link"
+  prometheus-lb-dns-name        = module.prometheus_lb.prometheus-lb
+  prometheus-lb-zone-id         = module.prometheus_lb.prometheus-zone_id
+  grafana-lb-dns-name           = module.grafana_lb.grafana-lb
+  grafana-lb-zone-id            = module.grafana_lb.grafana-zone_id
+  prod-lb-dns-name              = module.prod_lb.prod-dns-name
+  prod-lb-zone-id               = module.prod_lb.prod-zone-id
+  stage-lb-dns-name             = module.stage_lb.stage-dns-name
+  stage-lb-zone-id              = module.stage_lb.stage-zone-id
+}
