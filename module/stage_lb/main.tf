@@ -11,7 +11,7 @@ resource "aws_lb" "stage-lb" {
   }
 }
 
-resource "aws_lb_target_group" "stage-lb" {
+resource "aws_lb_target_group" "stage-tg" {
   name     = var.target_name
   port     = var.http_proxy
   protocol = "HTTP"

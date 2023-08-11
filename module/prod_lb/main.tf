@@ -12,7 +12,7 @@ resource "aws_lb" "prod-lb" {
 }
 
 #creating target group
-resource "aws_lb_target_group" "prod-lb" {
+resource "aws_lb_target_group" "prod-tg" {
   name     = var.target_name
   port     = var.http_proxy
   protocol = "HTTP"
@@ -25,14 +25,14 @@ resource "aws_lb_target_group" "prod-lb" {
   }
 }
 
-resource "aws_lb_listener" "prod-lb" {
+resource "aws_lb_listener" "prod-listener" {
   load_balancer_arn = aws_lb.prod-lb.arn
   port = "80"
   protocol = "HTTP"
 
   default_action {
     type = "forward"
-    target_group_arn = aws_lb_target_group.prod-lb.arn
+    target_group_arn = aws_lb_target_group.prod-tg.arn
   } 
 }
 
