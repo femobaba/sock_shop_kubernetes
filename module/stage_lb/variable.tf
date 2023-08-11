@@ -2,7 +2,6 @@ variable "subnets" {}
 variable "sg" {}
 variable "vpc_id" {}
 variable "target_name" {}
-variable "http_proxy" {}
 variable "certificate_arn" {}
 variable "instance1" {}
 variable "instance2" {}

@@ -14,7 +14,7 @@ resource "aws_lb" "prod-lb" {
 #creating target group
 resource "aws_lb_target_group" "prod-tg" {
   name     = var.target_name
-  port     = var.http_proxy
+  port     = 30002
   protocol = "HTTP"
   vpc_id   = var.vpc_id
   health_check {
