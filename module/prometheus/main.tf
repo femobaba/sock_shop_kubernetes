@@ -4,7 +4,7 @@ resource "aws_lb" "prometheus-lb" {
   internal        = false
   load_balancer_type = "application"
   subnets         = var.subnets
-  security_groups = [var.prometheus_sg_name]
+  security_groups = [var.sg]
 
   tags = {
     Name = "prometheus-lb"
@@ -13,7 +13,7 @@ resource "aws_lb" "prometheus-lb" {
 
 resource "aws_lb_target_group" "prometheus-tg" {
   name     = var.target_name
-  port     = var.http_proxy
+  port     = 30001
   protocol = "HTTP"
   vpc_id   = var.vpc_id
   health_check {

@@ -13,7 +13,7 @@ resource "aws_lb" "grafana-lb" {
 
 resource "aws_lb_target_group" "grafana-tg" {
   name     = var.target_name
-  port     = var.http_proxy
+  port     = 30001
   protocol = "HTTP"
   vpc_id   = var.vpc_id
   health_check {

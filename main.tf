@@ -143,7 +143,7 @@ module "prod_lb" {
   subnets         = [module.vpc.pubsub1_id, module.vpc.pubsub2_id, module.vpc.pubsub3_id]
   sg              = module.vpc.master_sg_id
   vpc_id          = module.vpc.vpc_id
-  vpc             = module.vpc.keypair
+  target_name     ="${local.project-name}-prod-tg"
   certificate_arn = module.route53.k8s-cert
   instance1       = module.worker_node.worker_id[0]
   instance2       = module.worker_node.worker_id[1]
@@ -156,8 +156,8 @@ module "stage_lb" {
   subnets         = [module.vpc.pubsub1_id, module.vpc.pubsub2_id, module.vpc.pubsub3_id]
   sg              = module.vpc.master_sg_id
   vpc_id          = module.vpc.vpc_id
-  vpc             = module.vpc.keypair
   certificate_arn = module.route53.k8s-cert
+  target_name      = "${local.project-name}-stage-tg"
   instance1       = module.worker_node.worker_id[0]
   instance2       = module.worker_node.worker_id[1]
   instance3       = module.worker_node.worker_id[2]
@@ -166,21 +166,27 @@ module "stage_lb" {
 # create prometheus_lb
 module "prometheus_lb" {
   source             = "./module/prometheus"
-  prometheus_sg_name = module.vpc.master_sg_id
+  sg                 = module.vpc.master_sg_id
   subnets            = [module.vpc.pubsub1_id, module.vpc.pubsub2_id, module.vpc.pubsub3_id]
-  instance           = module.worker_node.worker_id
+  instance1          = module.worker_node.worker_id[0]
+  instance2          = module.worker_node.worker_id[1]
+  instance3          = module.worker_node.worker_id[2]
+  target_name        = "${local.project-name}-prometheus-tg"
   vpc_id             = module.vpc.vpc_id
-  acm_certificate    = module.route53.k8s-cert
+ certificate_arn     = module.route53.k8s-cert
 }
 
 # create grafana_lb
 module "grafana_lb" {
-  source          = "./module/grafana"
-  grafana_sg_name = module.vpc.master_sg_id
-  subnets         = [module.vpc.pubsub1_id, module.vpc.pubsub2_id, module.vpc.pubsub3_id]
-  instance        = module.worker_node.worker_id
-  vpc_id          = module.vpc.vpc_id
-  acm_certificate = module.route53.k8s-cert
+  source           = "./module/grafana"
+  grafana_sg_name  = module.vpc.master_sg_id
+  subnets          = [module.vpc.pubsub1_id, module.vpc.pubsub2_id, module.vpc.pubsub3_id]
+  instance1        = module.worker_node.worker_id[0]
+  instance2        = module.worker_node.worker_id[1]
+  instance3        = module.worker_node.worker_id[2]
+  target_name      = "${local.project-name}-grafana-tg"
+  vpc_id           = module.vpc.vpc_id
+  certificate_arn  = module.route53.k8s-cert
 }
 
 # creating route53

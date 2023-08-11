@@ -13,7 +13,7 @@ resource "aws_lb" "stage-lb" {
 
 resource "aws_lb_target_group" "stage-tg" {
   name     = var.target_name
-  port     = var.http_proxy
+  port     = 30001
   protocol = "HTTP"
   vpc_id   = var.vpc_id
   health_check {
