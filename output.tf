@@ -26,3 +26,11 @@ output "prometheus-lb" {
 output "grafana-lb" {
   value = module.grafana_lb.grafana-lb
 }
+
+output "jenkins-lb" {
+  value = module.jenkins.jenkins-dns_name
+}
+
+output "jenkins-ip" {
+  value = module.jenkins.jenkins_ip
+}
