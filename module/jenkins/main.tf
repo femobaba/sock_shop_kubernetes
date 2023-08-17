@@ -1,6 +1,6 @@
 #Creating jenkins server using a t2.medium
 resource "aws_instance" "jenkins" {
-  ami                    = "ami-03f65b8614a860c29"
+  ami                    = "ami-0e4841c3bb7d47d69" #"ami-03f65b8614a860c29"
   instance_type          = var.instance_type_t2
   vpc_security_group_ids = [var.jenkins_sg]
   subnet_id              = var.prt_sn1

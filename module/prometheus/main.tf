@@ -13,7 +13,7 @@ resource "aws_lb" "prometheus-lb" {
 
 resource "aws_lb_target_group" "prometheus-tg" {
   name     = var.target_name
-  port     = 30001
+  port     = 31090
   protocol = "HTTP"
   vpc_id   = var.vpc_id
   health_check {
@@ -51,17 +51,17 @@ resource "aws_lb_listener" "prometheus-listener2" {
 resource "aws_lb_target_group_attachment" "prometheus-attachment1" {
   target_group_arn = aws_lb_target_group.prometheus-tg.arn
   target_id        = var.instance1
-  port             = 30001
+  port             = 31090
 }
 
 resource "aws_lb_target_group_attachment" "prometheus-attachment2" {
   target_group_arn = aws_lb_target_group.prometheus-tg.arn
   target_id        = var.instance2
-  port             = 30001
+  port             = 31090
 }
 
 resource "aws_lb_target_group_attachment" "prometheus-attachmen3" {
   target_group_arn = aws_lb_target_group.prometheus-tg.arn
   target_id        = var.instance3
-  port             = 30001
+  port             = 31090
 }
