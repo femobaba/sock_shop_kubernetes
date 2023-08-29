@@ -1,5 +1,5 @@
 provider "aws" {
-  profile = "Groupaccess"
+  #profile = "Groupaccess"
   region  = "us-west-2"
 }
 
